@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const Populate = require("../utils/autoPopulate");
 
 // Define a schema for categories
 const categorySchema = new mongoose.Schema({
@@ -41,7 +42,7 @@ const articleSchema = new mongoose.Schema({
         // ref: "User",
         // required: true
     },
-    comment: [{ type: Schema.Types.ObjectId, ref: 'Comment' }],
+    comment: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Comment' }],
     status: {
         type: String,
         required: true,

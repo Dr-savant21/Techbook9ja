@@ -1,4 +1,4 @@
-const Article = require("../models/post");
+const Article = require("../model/post");
 const cloudinaryConfig = require("../config/cloudinary")
 const fs = require('fs').promises;
 
