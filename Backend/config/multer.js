@@ -25,7 +25,7 @@ const mediaStorage = multer.diskStorage({
   },
   fileFilter,
   filename: (req, file, cb) => {
-    cb(null, Date.now() + '_' + file.originalname);
+    cb(null, file.originalname);
   },
 });
 

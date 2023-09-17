@@ -16,21 +16,25 @@ const articleSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
-    // content: {
-    //     type: String,
-    //     required: true,
-    // },
+    content: {
+        type: String,
+        required: true,
+    },
     media: [
         {
-            imageName: {
+            public_id: {
                 type : String,
                 required : true
             },
-            imageId: {
+            asset_id: {
                 type: String,
                 required: true
             },
-            imageUrl: {
+            secure_url: {
+                type: String,
+                required: true
+            },
+            original_filename: {
                 type: String,
                 required: true
             }
@@ -58,7 +62,9 @@ const articleSchema = new mongoose.Schema({
 
 articleSchema
   .pre('findOne', Populate('author'))
-  .pre('find', Populate('author'));
+  .pre('find', Populate('author'))
+  .pre('findOne', Populate('comment'))
+  .pre('find', Populate('comment'));
 // Create a model for articles
 const Article = mongoose.model('Article', articleSchema);
 module.exports = Article;

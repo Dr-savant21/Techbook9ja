@@ -1,6 +1,5 @@
 const Article = require("../model/post");
 const cloudinaryConfig = require("../config/cloudinary")
-const fs = require('fs').promises;
 
 class ArticleController {
 
@@ -13,20 +12,8 @@ class ArticleController {
         category,
         subcategories
       } = req.body;
-      const author = "test" //req.user.id || "test";
-      const contentPath = {
-        path: './media_files/content.txt'
-      }
-    
-      if(!content){
-        throw new Error("Article content cannot be empty!");
-      }
-      fs.writeFile(contentPath.path, content, 'utf8', (err) => {
-        if (err) throw new Error("Content cannot be written to file");
-      });
-
+      const author = "test" //req.user.id || "test"
       const media = req.files;
-      media.push(content);
 
       if(media.length <= 1){
         throw new Error("An Article must have two Images");
@@ -38,11 +25,12 @@ class ArticleController {
         // Create article in the database
         await new Article({
           title,
+          content,
           media: mediaDetails,
           author,
           category: {
             name: category,
-            subcategories: [subcategories]
+            subcategories
           }
         }).save();
         return res.json({
@@ -89,7 +77,7 @@ class ArticleController {
 
   async getArticle(req, res){
     try{
-      const post = await Article.findById(req.params.id).populate('comment').lean();
+      const post = await Article.findById(req.params.postId)//.populate('comment').lean();
       if(!post){
         throw new Error("Post not found");
       } else {
@@ -105,47 +93,55 @@ class ArticleController {
 
   async updateArticle(req, res){
     try{
-      const post = await Article.findById(req.params.postId);
-      if (!post){
-        throw new Error(" Article not found!");
-      } else {
-        const {
-          title,
-          content,
-          category,
-          subcategories
-        } = req.body;
-        const contentPath = {
-          path: './media_files/content.txt'
-        }
-      
-        if(content){
-          fs.writeFile(contentPath.path, content, 'utf8', (err) => {
-            if (err) throw new Error("Content cannot be written to file");
-          });
-        }
-  
-        let media = req.files || [];
-        media.push(content);
+      const {
+        title,
+        content,
+        category,
+        subcategories
+      } = req.body;
+      let media = req.files;
+      const fieldsToUpdate = {
+        title,
+        content,
+      };
 
-        const mediaDetails = await cloudinaryConfig.createMedia(media);
+      if(category){
+        fieldsToUpdate['category'] = { "name": category };
+        if(subcategories){
+          fieldsToUpdate["category"]["subcategories"] = subcategories;
+        }
+      }
+        
+      let mediaDetails = "";
+      if(media.length <= 1){
+        throw new Error("An Article must have two Images");
+      } else {
+        mediaDetails = await cloudinaryConfig.createMedia(media);
         if (!mediaDetails){
           throw new Error("There was a problem uploading the image(s)");
         }
-        // await cloudinaryConfig.deleteMedia();
-        await post.set({
-          title,
-          media: mediaDetails,
-          category: {
-            name: category,
-            subcategories: [subcategories]
-          }
-        }).save();
+        fieldsToUpdate["media"] = mediaDetails;
+      }
+      Object.keys(fieldsToUpdate).forEach((key) => {
+        if (fieldsToUpdate[key] === undefined || fieldsToUpdate[key] === null) {
+          delete fieldsToUpdate[key];
+        }
+      });
+      const post = await Article.findByIdAndUpdate(
+        req.params.postId,
+        fieldsToUpdate,
+        { new: true }, // To return the updated document
+      );
+      if (!post) {
+        // Article not found
+        throw new Error('Article not found');
+      } else {
+        // Article updated successfully, return the updated article
         return res.status(200).send("Article Updated!");
       }
     } catch(error){
       console.log(`${error} ERROR UPDATING ARTICLES`);
-      return res.json({ error });
+      return res.send(error.message);
     }
   }
 

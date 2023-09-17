@@ -10,19 +10,20 @@ cloudinary.config({
 class CloudinaryConfig{
     async createMedia(media){
         let mediaDetails = [];
-        media.forEach(async(mediaContent) => {
-            try {
-                const result = await cloudinary.uploader.upload(
-                    mediaContent.path,
-                    { public_id: "Foodblog9ja/Media" }
-                );
+        await Promise.all(
+            media.map(async (mediaContent, index) => {
+              try {
+                const uniquePublicId = `Foodblog9ja/Media/${Date.now()}_${index}`;
+                const result = await cloudinary.uploader.upload(mediaContent.path, {
+                  public_id: uniquePublicId,
+                });
                 mediaDetails.push(result);
-                console.log(mediaContent.path);
                 fs.unlink(mediaContent.path);
-            } catch (error) {
+              } catch (error) {
                 console.error(error);
-            }
-        })
+              }
+            })
+          );
         return mediaDetails;
     }
 
