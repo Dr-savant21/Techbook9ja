@@ -10,8 +10,12 @@ router.put("/:postId", upload.mediaUpload.any(), articleController.updateArticle
 router.get("/:postId", articleController.getArticle);
 router.get("/", articleController.getArticles);
 router.post("/:postId/comment", comment.createComment);
+router.post("/:postId/comment/:commentId/like", comment.likeComment);
+router.delete("/:postId/comment/:commentId/", comment.deleteComment);
 router.put("/:postId/comment/:commentId", comment.updateComment);
 router.post("/:postId/comment/:commentId/reply", reply.createReply);
+router.put("/:postId/comment/:commentId/reply/:replyId", reply.updateReply);
+router.delete("/:postId/comment/:commentId/reply/:replyId", reply.deleteReply);
 
 
 

@@ -28,14 +28,19 @@ class CloudinaryConfig{
     }
 
     async deleteMedia(media){
-        await cloudinary.api.delete_resources(media, (error, result) => {
-            if (error) {
-                console.error('Error deleting media:', error);
-            } else {
-                mediaDetails.push(result);
-                console.log('Deleted media:', result);
-            }
-        });
+      await Promise.all(
+        media.map(async (mediaContent) => {
+          try {
+            await cloudinary.uploader.destroy(mediaContent.public_id, (err) => {
+              if(err){
+                throw new Error(`error deleting asset: ${err}`);
+              }
+            });
+          } catch(error){
+            console.error(error);
+          }
+        })
+      )
     }
 }
 const cloudinaryConfig = new CloudinaryConfig()

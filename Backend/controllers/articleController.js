@@ -1,5 +1,5 @@
 const Article = require("../model/post");
-const cloudinaryConfig = require("../config/cloudinary")
+const cloudinaryConfig = require("../config/cloudinary");
 
 class ArticleController {
 
@@ -93,52 +93,52 @@ class ArticleController {
 
   async updateArticle(req, res){
     try{
-      const {
-        title,
-        content,
-        category,
-        subcategories
-      } = req.body;
-      let media = req.files;
-      const fieldsToUpdate = {
-        title,
-        content,
-      };
+      const post = await Article.findById(req.params.postId);
+      if (post){
+        const {
+          title,
+          content,
+          category,
+          subcategories
+        } = req.body;
+        let media = req.files;
+        const fieldsToUpdate = {
+          title,
+          content,
+        };
 
-      if(category){
-        fieldsToUpdate['category'] = { "name": category };
-        if(subcategories){
-          fieldsToUpdate["category"]["subcategories"] = subcategories;
+        if(category){
+          fieldsToUpdate['category'] = { "name": category };
+          if(subcategories){
+            fieldsToUpdate["category"]["subcategories"] = subcategories;
+          }
         }
-      }
         
-      let mediaDetails = "";
-      if(media.length <= 1){
-        throw new Error("An Article must have two Images");
-      } else {
-        mediaDetails = await cloudinaryConfig.createMedia(media);
-        if (!mediaDetails){
-          throw new Error("There was a problem uploading the image(s)");
+        let mediaDetails = "";
+        if(media.length < 2){
+          throw new Error("An Article must contain two Images");
+        } else {
+          await cloudinaryConfig.deleteMedia(post.media);
+          mediaDetails = await cloudinaryConfig.createMedia(media);
+          if (!mediaDetails){
+            throw new Error("There was a problem uploading the image(s)");
+          }
+          fieldsToUpdate["media"] = mediaDetails;
         }
-        fieldsToUpdate["media"] = mediaDetails;
-      }
-      Object.keys(fieldsToUpdate).forEach((key) => {
-        if (fieldsToUpdate[key] === undefined || fieldsToUpdate[key] === null) {
-          delete fieldsToUpdate[key];
-        }
-      });
-      const post = await Article.findByIdAndUpdate(
-        req.params.postId,
-        fieldsToUpdate,
-        { new: true }, // To return the updated document
-      );
-      if (!post) {
-        // Article not found
-        throw new Error('Article not found');
-      } else {
+        Object.keys(fieldsToUpdate).forEach((key) => {
+          if (fieldsToUpdate[key] === undefined || fieldsToUpdate[key] === null) {
+            delete fieldsToUpdate[key];
+          }
+        });
+        await post.set(
+          fieldsToUpdate,
+        ).save();
         // Article updated successfully, return the updated article
         return res.status(200).send("Article Updated!");
       }
+      // Article not found
+      throw new Error('Article not found');
+        
     } catch(error){
       console.log(`${error} ERROR UPDATING ARTICLES`);
       return res.send(error.message);

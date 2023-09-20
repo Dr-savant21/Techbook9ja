@@ -1,17 +1,25 @@
-const { Schema, model } = require('mongoose');
+const mongoose = require('mongoose');
 const Populate = require("../utils/autoPopulate");
 
-const commentSchema = new Schema({
+const replySchema = new mongoose.Schema({
   content: { type: String, required: true },
   author: { type: String, required: true }, //{ type: Schema.Types.ObjectId, ref: "User" },
-  post: { type: Schema.Types.ObjectId, ref: "Article" },
-  comments: [this],
+  post: { type: mongoose.Schema.Types.ObjectId, ref: "Article" },
+  likes: [{ type: String }],
+});
+
+const commentSchema = new mongoose.Schema({
+  content: { type: String, required: true },
+  author: { type: String, required: true }, //{ type: Schema.Types.ObjectId, ref: "User" },
+  post: { type: mongoose.Schema.Types.ObjectId, ref: "Article" },
+  likes: [{ type: String }],
+  replies: [replySchema],
 }, { timestamps: true });
 commentSchema
-.pre('findOne', Populate('author'))
-.pre('find', Populate('author'))
-.pre('findOne', Populate('comments'))
-.pre('find', Populate('comments'));
+  .pre('findOne', Populate('author'))
+  .pre('find', Populate('author'))
+  .pre('findOne', Populate('replies'))
+  .pre('find', Populate('replies'));
 
-const Comment = model('Comment', commentSchema);
+const Comment = mongoose.model('Comment', commentSchema);
 module.exports = Comment;

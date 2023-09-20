@@ -46,7 +46,7 @@ const articleSchema = new mongoose.Schema({
         // ref: "User",
         // required: true
     },
-    comment: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Comment' }],
+    comments: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Comment' }],
     status: {
         type: String,
         required: true,
@@ -63,8 +63,8 @@ const articleSchema = new mongoose.Schema({
 articleSchema
   .pre('findOne', Populate('author'))
   .pre('find', Populate('author'))
-  .pre('findOne', Populate('comment'))
-  .pre('find', Populate('comment'));
+  .pre('findOne', Populate('comments'))
+  .pre('find', Populate('comments'));
 // Create a model for articles
 const Article = mongoose.model('Article', articleSchema);
 module.exports = Article;
