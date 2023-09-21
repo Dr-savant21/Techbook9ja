@@ -13,7 +13,7 @@ const commentSchema = new mongoose.Schema({
   author: { type: String, required: true }, //{ type: Schema.Types.ObjectId, ref: "User" },
   post: { type: mongoose.Schema.Types.ObjectId, ref: "Article" },
   likes: [{ type: String }],
-  replies: [replySchema],
+  replies: [this],
 }, { timestamps: true });
 commentSchema
   .pre('findOne', Populate('author'))

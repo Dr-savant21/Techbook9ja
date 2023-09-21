@@ -1,11 +1,11 @@
 const passport = require('passport');
-// const User = require('../models/User')
+const User = require('../model/User')
 
 
 // Load GoogleStrategy and LocalStrategy configurations
-// require('./googleStrategy')(passport);
-// require('./localLoginStrategy')(passport);
-// require('./localSignupStrategy')(passport);
+require('./googleStrategy')(passport);
+require('./localLoginStrategy')(passport);
+require('./localSignUpStrategy')(passport);
 // require('./localPassResetStrategy')(passport);
 
 module.exports = function (passport) {

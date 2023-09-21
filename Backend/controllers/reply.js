@@ -14,7 +14,7 @@ const mongoose = require("mongoose");
 //       if (comment.replies && comment.replies.length > 0) {
 //         const nestedReplies = await findReplies(comment.replies, CommentId);
 //         if (nestedReplies) {
-//           return nestedReplies; // Return the Mongoose model instance
+//           return nestedReplies // Return the Mongoose model instance
 //         }
 //       }
 //     }
@@ -64,8 +64,9 @@ class Reply{
     //                     post: req.params.postId,
     //                 }).save();
     //                 parentComment.replies.push(reply);
-    //                 const commentModel = new Comment(parentComment);
-    //                 await commentModel.save();
+    //                 await parentComment.save();
+    //                 // const commentModel = new Comment(parentComment);
+    //                 // await commentModel.save();
     //                 return res.redirect(`/articles/${postId}/`);
     //             }
     //             throw new Error("Comment not found!");
