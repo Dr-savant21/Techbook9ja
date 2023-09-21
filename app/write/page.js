@@ -1,5 +1,6 @@
 import React from 'react'
 import Link from 'next/link'
+import TextArea from '../components/TextArea'
 export default function Write() {
   return (
     <div>
@@ -66,9 +67,7 @@ export default function Write() {
 
 
         <div>
-            <input placeholder='Title'></input>
-            <input placeholder='Main content' className='w-full h-[100vh]' >
-            </input>
+            <TextArea />
         </div>
     </div>
   )
