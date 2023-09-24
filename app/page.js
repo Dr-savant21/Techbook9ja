@@ -1,11 +1,8 @@
 import Image from 'next/image'
 import Navbar from './components/Navbar'
-<<<<<<< HEAD
 import Footer from './components/footer'
-=======
 import BlogCard from './components/BlogCard'
 import AuthorCard from './components/AuthorCard'
->>>>>>> 32d5446c7bbfadc7a8c04c3855d7c1d82ea963cf
 
 export default function Home() {
 
