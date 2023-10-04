@@ -5,7 +5,7 @@ import Image from 'next/image'
 export default async function Navbar({ username }) {
   const { userId } = auth();
   return (
-    <nav className="bg-white shadow-lg">
+    <nav className="bg-white shadow-lg w-full">
       <div className="container mx-auto flex justify-between items-center px-14">
         <div className=" text-sm md:text-xl flex space-x-4">
           <Link className='' href="/">
@@ -82,14 +82,6 @@ export default async function Navbar({ username }) {
               </Link>
             </>
           )}
-          {userId && (
-            <Link href='profile' className='text-gray-300 hover:text-white mr-4'>
-              Profile
-            </Link>
-          )}
-          <div className='ml-auto'>
-            <UserButton afterSignOutUrl='/' />
-              </div>
       </div>
 
             </div>
@@ -107,6 +99,11 @@ export default async function Navbar({ username }) {
             </svg>
             </Link>
             )}
+            {userId && (
+            <div className='ml-auto'>
+              <UserButton afterSignOutUrl='/' />
+            </div>
+          )}
            
         </div>
 

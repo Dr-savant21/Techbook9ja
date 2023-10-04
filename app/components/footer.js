@@ -34,7 +34,7 @@ const Footer = () => {
         </div>
         <div className=' mb-10'>
           <h5 className='font-semibold leading-[17px] text-[17px] font-["Noto Sans"]  mb-4' style={{ color: '#222' }}>Subscribe for newsletter</h5>
-          <form className='mb-6 w-[395px] flex' action=''>
+          <form className='mb-6 w-full flex' action=''>
             <input className='mt-1 block w-2/3 border-transparent focus:border-gray-500 focus:bg-white focus:ring-0 text-slate-600 rounded-l-md' type='email' style={{ backgroundColor: '#DFF1F0' }} placeholder='Your Email'></input>
             <input type='submit' className='text-white text-[15px] font-["Noto Sans"] w-1/3 mt-1 rounded-r-md cursor-pointer' value={'Subscribe'} style={{ backgroundColor: '#00AAA1' }}></input>
           </form>
