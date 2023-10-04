@@ -3,7 +3,7 @@ import React from 'react';
 const Footer = () => {
   return (
     <footer className="text-white divide-y divide-solid" style={{ backgroundColor: '#F2F8F7' }}>
-      <div className='container mx-auto flex flex-wrap justify-between p-20 '>
+      <div className='container mx-auto flex flex-wrap justify-between p-20 max-sm:p-10'>
         <div className=''>
           <div className='mb-9'>
             <span className='bg-green-500 text-[27px] font-semibold font-["Noto Sans"] leading-[27px]'>Tech</span>
@@ -32,9 +32,9 @@ const Footer = () => {
             <a href='' className='text-[15px] font-normal font-["Noto Sans"] leading-[22.5px] mb-2 hover:underline' style={{ display: 'block', color: '#555555' }}>Privacy Policy</a>
           </div>
         </div>
-        <div className=' mb-10'>
+        <div className=' mb-10 max-md:mt-5'>
           <h5 className='font-semibold leading-[17px] text-[17px] font-["Noto Sans"]  mb-4' style={{ color: '#222' }}>Subscribe for newsletter</h5>
-          <form className='mb-6 w-full flex' action=''>
+          <form className='mb-6 w-[395px] flex' action=''>
             <input className='mt-1 block w-2/3 border-transparent focus:border-gray-500 focus:bg-white focus:ring-0 text-slate-600 rounded-l-md' type='email' style={{ backgroundColor: '#DFF1F0' }} placeholder='Your Email'></input>
             <input type='submit' className='text-white text-[15px] font-["Noto Sans"] w-1/3 mt-1 rounded-r-md cursor-pointer' value={'Subscribe'} style={{ backgroundColor: '#00AAA1' }}></input>
           </form>
